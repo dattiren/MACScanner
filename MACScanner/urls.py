@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+import scanner.views as scanner_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('upload/', scanner_view.upload, name='upload')
 ]
