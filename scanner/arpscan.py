@@ -1,17 +1,29 @@
 from scapy.layers.l2 import *
 from datetime import datetime
+from scanner.models import *
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
 
 
 def get_address():
-    ip = '192.168.0.*'
+    ip = '133.14.206.*'
     print('start: {}'.format(datetime.now().strftime('%Y/%m/%d %H:%M:%S')))
-    answers, _ = arping(ip, timeout=1, verbose=0)
-    for send_packet, recieve_packet in answers:
-        print('MAC Address: {}, IP Address: {}'.format(
-            recieve_packet[ARP].hwsrc,  # MACアドレス
-            recieve_packet[ARP].psrc   # IPアドレス
-        )
-        )
+    result, nonresult = arping(ip, timeout=1, verbose=0)
+    maclist=[]
+    for send_packet, recieve_packet in result:
+        macaddress=recieve_packet[ARP].hwsrc.replace(":","")
+        bendar_num=macaddress[:6]
+        print('MAC Address: {}'.format(
+            macaddress,  # MACアドレス
+            # recieve_packet[ARP].psrc   # IPアドレス
+            )
+         )
+        if Organization.Objects.filter(assignment = bendar_num).exists():
+            maclist.append()
+            print(maclist)
+        else:
+            print("no Macthed")
+
+    print(nonresult)
     print('end  : {}'.format(datetime.now().strftime('%Y/%m/%d %H:%M:%S')))
 
 
